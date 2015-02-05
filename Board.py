@@ -27,7 +27,7 @@ class Board:
 
 
     def checkGameOver(self):
-        for combo in self.winCombos: # Possible winning combinations
+        for combo in self.winCombos:
             space1 = self.board[combo[0][0]][combo[0][1]]
             space2 = self.board[combo[1][0]][combo[1][1]]
             space3 = self.board[combo[2][0]][combo[2][1]]
@@ -40,11 +40,11 @@ class Board:
         return
 
 
-    def checkValidMove(self, move): # E.g. A1, B3, C2
+    def checkValidMove(self, move): # E.g. 1A, 3B, 2C
         if ((not isinstance(move, str))
         or (len(move) != 2)
-        or (move[0] not in "ABC")
-        or (move[1] not in "123")):
+        or (move[0] not in "123")
+        or (move[1] not in "ABC")):
             return False
         return True
 
@@ -56,33 +56,60 @@ class Board:
         self.currentPlayer = 'X'
         return
 
-    
-#game = Board()
-#game.numMoves = 9
-#game.checkGameOver()
-#print (game.gameOver)
-#print ("expected: True")
-#print (game.winner)
-#print ("expected: None")
-#game.numMoves = 5
-#game.board = [
-#        ["X", "X", "X",], 
-#        ["X", " ", " ",],
-#        ["X", " ", " " ]
-#]
-#game.checkGameOver()
-#print (game.gameOver)
-#print ("expected: True")
-#print (game.winner)
-#print ("expected: X")
-#game.board = [
-#        ["O", " ", " ",], 
-#        ["O", " ", " ",],
-#        ["O", " ", " " ]
-#]
-#game.switchPlayer()
-#game.checkGameOver()
-#print (game.gameOver)
-#print ("expected: True")
-#print (game.winner)
-#print ("expected: O")
+
+    def drawBoard(self):
+        switch = 1
+        print ("  A B C ")
+        for row in range(0,5):
+            if (switch == 1):
+                boardRow = int(row/2)
+                print (str(boardRow + 1) + " " +
+                      self.board[boardRow][0] + "|" +
+                      self.board[boardRow][1] + "|" +
+                      self.board[boardRow][2]
+                )
+            else:
+                print ("  -----")
+            switch *= -1
+        return
+
+
+ 
+game = Board()
+game.numMoves = 9
+game.checkGameOver()
+print (game.gameOver)
+print ("expected: True")
+print (game.winner)
+print ("expected: None")
+game.numMoves = 5
+print (game.checkValidMove("3B"))
+print ("expected: True")
+game.board = [
+        ["X", "X", "X",], 
+        ["X", " ", " ",],
+        ["X", " ", " " ]
+]
+print ()
+game.drawBoard()
+print ()
+game.checkGameOver()
+print (game.gameOver)
+print ("expected: True")
+print (game.winner)
+print ("expected: X")
+game.board = [
+        ["O", " ", " ",], 
+        ["O", " ", " ",],
+        ["O", " ", " " ]
+]
+print ()
+game.drawBoard()
+print ()
+game.switchPlayer()
+game.checkGameOver()
+print (game.gameOver)
+print ("expected: True")
+print (game.winner)
+print ("expected: O")
+
