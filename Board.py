@@ -41,13 +41,10 @@ class Board:
 
 
     def checkValidMove(self, move): # E.g. A1, B3, C2
-        if (not isinstance(move, str)):
-            return False
-        elif (len(move) != 2):
-            return False
-        elif (move[0] not in "ABC"):
-            return False
-        elif (move[1] not in "123"):
+        if ((not isinstance(move, str))
+        or (len(move) != 2)
+        or (move[0] not in "ABC")
+        or (move[1] not in "123")):
             return False
         return True
 
