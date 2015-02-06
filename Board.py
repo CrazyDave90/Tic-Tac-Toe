@@ -6,6 +6,9 @@ class Board:
         self.winner = None
         self.numMoves = 0
         self.currentPlayer = 'X'
+        self.currentMove = ""
+        self.coordinate1 = ""
+        self.coordinate2 = ""
         self.board = [
             [" ", " ", " ",], 
             [" ", " ", " ",],
@@ -39,12 +42,25 @@ class Board:
             self.gameOver = True
         return
 
+    
+    def setCoordinates(self): # coordinates for self.Board
+        self.currentMove.upper()
+        self.coordinate1 = ord(self.currentMove[0])-1
+        self.coordinate2 = ord(self.currentMove[1])-17
+        if (self.coordinate1 < 0 or self.coordinate2 < 0):
+            self.coordinate1 = "INVALID"
+            self.coordinate2 = "INVALID"
+        else:
+            self.coordinate1 = int(chr(self.coordinate1))
+            self.coordinate2 = int(chr(self.coordinate2))
+        return
 
-    def checkValidMove(self, move): # E.g. 1A, 3B, 2C
-        if ((not isinstance(move, str))
-        or (len(move) != 2)
-        or (move[0] not in "123")
-        or (move[1] not in "ABC")):
+
+    def isValidMove(self): # checks valid coordinates
+        if ((len(self.currentMove) != 2)
+        or (str(self.coordinate1) not in "012")
+        or (str(self.coordinate2) not in "012")
+        or (self.board[self.coordinate1][self.coordinate2] != " ")):
             return False
         return True
 
@@ -54,6 +70,12 @@ class Board:
             self.currentPlayer = 'O'
             return
         self.currentPlayer = 'X'
+        return
+
+
+    def placeMove(self):
+        self.board[self.coordinate1][self.coordinate2] = self.currentPlayer
+        self.numMoves += 1
         return
 
 
@@ -74,42 +96,19 @@ class Board:
         return
 
 
- 
-game = Board()
-game.numMoves = 9
-game.checkGameOver()
-print (game.gameOver)
-print ("expected: True")
-print (game.winner)
-print ("expected: None")
-game.numMoves = 5
-print (game.checkValidMove("3B"))
-print ("expected: True")
-game.board = [
-        ["X", "X", "X",], 
-        ["X", " ", " ",],
-        ["X", " ", " " ]
-]
-print ()
-game.drawBoard()
-print ()
-game.checkGameOver()
-print (game.gameOver)
-print ("expected: True")
-print (game.winner)
-print ("expected: X")
-game.board = [
-        ["O", " ", " ",], 
-        ["O", " ", " ",],
-        ["O", " ", " " ]
-]
-print ()
-game.drawBoard()
-print ()
-game.switchPlayer()
-game.checkGameOver()
-print (game.gameOver)
-print ("expected: True")
-print (game.winner)
-print ("expected: O")
-
+    def startGame(self):
+        self.drawBoard()
+        print ("\n To play, enter the row followed by the column of any empty space.")
+        while (not self.gameOver):
+            print (" Current Player: " + self.currentPlayer)
+            self.currentMove = input(" Enter your move: ")
+            self.setCoordinates()
+            if (self.isValidMove()):
+                self.placeMove()
+                self.drawBoard()
+                self.checkGameOver()
+                self.switchPlayer()
+            else:
+                print (" Invalid Move! Try again.")
+        print (" " + self.winner + " wins!")
+        return
